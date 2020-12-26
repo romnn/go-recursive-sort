@@ -4,10 +4,10 @@ import (
 	"testing"
 )
 
-func TestCli(t *testing.T) {
+func TestExample(t *testing.T) {
 	out := run()
-	expected := "This is an example!"
+	expected := true
 	if out != expected {
-		t.Errorf("Got %s but expected %s", out, expected)
+		t.Errorf("Got %t but expected %t", out, expected)
 	}
 }

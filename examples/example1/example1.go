@@ -6,8 +6,12 @@ import (
 	gorecursivesort "github.com/romnnn/go-recursive-sort"
 )
 
-func run() string {
-	return gorecursivesort.Shout("This is an example")
+func run() bool {
+	equal, err := gorecursivesort.AreEqualJSON(`{"test": ["a", "c", "b"]}`, `{"test": ["c", "a", "b"]}`)
+	if err != nil {
+		panic(err)
+	}
+	return equal
 }
 
 func main() {
