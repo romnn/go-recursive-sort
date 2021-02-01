@@ -1,12 +1,11 @@
 ## go-recursive-sort
 
-[![Build Status](https://travis-ci.com/romnn/go-recursive-sort.svg?branch=master)](https://travis-ci.com/romnn/go-recursive-sort)
+[![Build Status](https://github.com/romnn/go-recursive-sort/workflows/test/badge.svg)](https://github.com/romnn/go-recursive-sort/actions)
 [![GitHub](https://img.shields.io/github/license/romnn/go-recursive-sort)](https://github.com/romnn/go-recursive-sort)
 [![GoDoc](https://godoc.org/github.com/romnn/go-recursive-sort?status.svg)](https://godoc.org/github.com/romnn/go-recursive-sort)  [![Test Coverage](https://codecov.io/gh/romnnn/go-recursive-sort/branch/master/graph/badge.svg)](https://codecov.io/gh/romnnn/go-recursive-sort)
 [![Release](https://img.shields.io/github/release/romnn/go-recursive-sort)](https://github.com/romnn/go-recursive-sort/releases/latest)
 
-Your description goes here...
-
+Recursively sort any golang interface for comparisons in your unit tests.
 
 
 #### Usage as a library
@@ -28,7 +27,7 @@ Before you get started, make sure you have installed the following tools::
     $ python3 -m pip install pre-commit bump2version invoke ruamel.yaml halo
     $ go get -u golang.org/x/tools/cmd/goimports
     $ go get -u golang.org/x/lint/golint
-    $ go get -u github.com/fzipp/gocyclo
+    $ go get -u github.com/fzipp/gocyclo/cmd/gocyclo
     $ go get -u github.com/mitchellh/gox  # if you want to test building on different architectures
 
 **Remember**: To be able to excecute the tools downloaded with `go get`, 
