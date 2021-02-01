@@ -2,7 +2,8 @@
 
 [![Build Status](https://github.com/romnn/go-recursive-sort/workflows/test/badge.svg)](https://github.com/romnn/go-recursive-sort/actions)
 [![GitHub](https://img.shields.io/github/license/romnn/go-recursive-sort)](https://github.com/romnn/go-recursive-sort)
-[![GoDoc](https://godoc.org/github.com/romnn/go-recursive-sort?status.svg)](https://godoc.org/github.com/romnn/go-recursive-sort)  [![Test Coverage](https://codecov.io/gh/romnnn/go-recursive-sort/branch/master/graph/badge.svg)](https://codecov.io/gh/romnnn/go-recursive-sort)
+[![GoDoc](https://godoc.org/github.com/romnn/go-recursive-sort?status.svg)](https://godoc.org/github.com/romnn/go-recursive-sort)
+[![Test Coverage](https://codecov.io/gh/romnn/go-recursive-sort/branch/master/graph/badge.svg)](https://codecov.io/gh/romnn/go-recursive-sort)
 [![Release](https://img.shields.io/github/release/romnn/go-recursive-sort)](https://github.com/romnn/go-recursive-sort/releases/latest)
 
 Recursively sort any golang interface for comparisons in your unit tests.
