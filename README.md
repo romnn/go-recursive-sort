@@ -1,9 +1,9 @@
 ## go-recursive-sort
 
-[![Build Status](https://travis-ci.com/romnnn/go-recursive-sort.svg?branch=master)](https://travis-ci.com/romnnn/go-recursive-sort)
-[![GitHub](https://img.shields.io/github/license/romnnn/go-recursive-sort)](https://github.com/romnnn/go-recursive-sort)
-[![GoDoc](https://godoc.org/github.com/romnnn/go-recursive-sort?status.svg)](https://godoc.org/github.com/romnnn/go-recursive-sort)  [![Test Coverage](https://codecov.io/gh/romnnn/go-recursive-sort/branch/master/graph/badge.svg)](https://codecov.io/gh/romnnn/go-recursive-sort)
-[![Release](https://img.shields.io/github/release/romnnn/go-recursive-sort)](https://github.com/romnnn/go-recursive-sort/releases/latest)
+[![Build Status](https://travis-ci.com/romnn/go-recursive-sort.svg?branch=master)](https://travis-ci.com/romnn/go-recursive-sort)
+[![GitHub](https://img.shields.io/github/license/romnn/go-recursive-sort)](https://github.com/romnn/go-recursive-sort)
+[![GoDoc](https://godoc.org/github.com/romnn/go-recursive-sort?status.svg)](https://godoc.org/github.com/romnn/go-recursive-sort)  [![Test Coverage](https://codecov.io/gh/romnnn/go-recursive-sort/branch/master/graph/badge.svg)](https://codecov.io/gh/romnnn/go-recursive-sort)
+[![Release](https://img.shields.io/github/release/romnn/go-recursive-sort)](https://github.com/romnn/go-recursive-sort/releases/latest)
 
 Your description goes here...
 
@@ -12,7 +12,7 @@ Your description goes here...
 #### Usage as a library
 
 ```golang
-import "github.com/romnnn/go-recursive-sort"
+import "github.com/romnn/go-recursive-sort"
 ```
 
 For more examples, see `examples/`.

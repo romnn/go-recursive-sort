@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 
-	gorecursivesort "github.com/romnnn/go-recursive-sort"
+	gorecursivesort "github.com/romnn/go-recursive-sort"
 )
 
 func run() bool {

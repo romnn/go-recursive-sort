@@ -1,4 +1,4 @@
-module github.com/romnnn/go-recursive-sort
+module github.com/romnn/go-recursive-sort
 
 go 1.15
 

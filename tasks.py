@@ -10,7 +10,7 @@ import os
 from invoke import task
 import webbrowser
 
-PKG = "github.com/romnnn/go-recursive-sort"
+PKG = "github.com/romnn/go-recursive-sort"
 CMD_PKG = PKG
 
 
