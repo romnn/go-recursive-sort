@@ -23,7 +23,7 @@ package main
 import (
 	"log"
 
-	"github.com/romnn/go-recursive-sort"
+	recursivesort "github.com/romnn/go-recursive-sort"
 )
 
 func main() {
@@ -51,16 +51,16 @@ import (
 	"log"
 	"reflect"
 
-	"github.com/romnn/go-recursive-sort"
+	recursivesort "github.com/romnn/go-recursive-sort"
 )
 
-// Struct fields must be public to be sorted
+// Common fields must be exported to be sorted
 type Common struct {
 	Values          map[string][]string
 	willNotBeSorted []string
 }
 
-// Struct fields must be public to be sorted
+// Struct fields must be exported to be sorted
 type Struct struct {
 	A      string
 	B      string

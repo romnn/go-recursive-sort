@@ -3,7 +3,7 @@ package main
 import (
 	"log"
 
-	"github.com/romnn/go-recursive-sort"
+	recursivesort "github.com/romnn/go-recursive-sort"
 )
 
 func main() {
