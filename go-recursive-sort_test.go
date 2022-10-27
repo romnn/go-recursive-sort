@@ -1,13 +1,9 @@
-package gorecursivesort
+package recursivesort
 
 import (
 	"testing"
 
-	"github.com/google/go-cmp/cmp"
-)
-
-const (
-	parallel = true
+	"reflect"
 )
 
 func recSortWithOrder(order ...interface{}) *RecursiveSort {
@@ -18,25 +14,21 @@ func recSortWithOrder(order ...interface{}) *RecursiveSort {
 }
 
 func TestAssumptions(t *testing.T) {
-	if parallel {
-		t.Parallel()
-	}
+	t.Parallel()
 	for _, c := range []struct {
 		a, b  interface{}
 		equal bool
 	}{
 		{map[string]int{"b": 1, "a": 2}, map[string]int{"a": 2, "b": 1}, true},
 	} {
-		if diff := cmp.Diff(c.a, c.b); (diff == "") != c.equal {
-			t.Errorf("got unexpected result: %s", diff)
+		if equal := reflect.DeepEqual(c.a, c.b); equal != c.equal {
+			t.Errorf("expected reflect.DeepEqual(%s, %s) == %t", c.a, c.b, c.equal)
 		}
 	}
 }
 
 func TestRecSort(t *testing.T) {
-	if parallel {
-		t.Parallel()
-	}
+	t.Parallel()
 	defaultSort := &RecursiveSort{}
 	for _, c := range []struct {
 		sort     *RecursiveSort
@@ -89,30 +81,8 @@ func TestRecSort(t *testing.T) {
 		t.Logf("before: %v", c.input)
 		c.sort.Sort(c.input)
 		t.Logf("after: %v", c.input)
-		if diff := cmp.Diff(c.input, c.expected); diff != "" {
-			t.Errorf("got unexpected result after recursive sort: %s", diff)
-		}
-	}
-}
-
-func TestAreEqualJSON(t *testing.T) {
-	if parallel {
-		t.Parallel()
-	}
-	for _, c := range []struct {
-		a, b  string
-		equal bool
-	}{
-		{`{"test": ["a", "c", "b"]}`, `{"test": ["c", "a", "b"]}`, true},
-		{`{"test": ["a", "c", "b"]}`, `{"testOther": ["c", "a", "b"]}`, false},
-		{`{"test": ["a", "c", "b"]}`, `{"test": ["c", "A", "b"]}`, false},
-		{`{"test": ["a", "c", "b"]}`, `{"test": ["A", "c", "b"]}`, false},
-		{`{"test": ["a", "c", "b"]}`, `{"test": ["a", "c", "b", "d"]}`, false},
-		{`{"test": ["a", "c", "b"], "other": "test"}`, `{"test": ["a", "c", "b"]}`, false},
-	} {
-		equal, err := AreEqualJSON(c.a, c.b)
-		if c.equal != equal {
-			t.Errorf("Expected AreEqualJSON(%s, %s) = %v but got %v: %v", c.a, c.a, c.equal, equal, err)
+		if equal := reflect.DeepEqual(c.input, c.expected); !equal {
+			t.Errorf("expected %v but got %v", c.expected, c.input)
 		}
 	}
 }

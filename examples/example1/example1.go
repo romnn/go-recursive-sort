@@ -1,19 +1,19 @@
 package main
 
 import (
-	"fmt"
+	"log"
 
-	gorecursivesort "github.com/romnn/go-recursive-sort"
+	recursivesort "github.com/romnn/go-recursive-sort"
 )
 
-func run() bool {
-	equal, err := gorecursivesort.AreEqualJSON(`{"test": ["a", "c", "b"]}`, `{"test": ["c", "a", "b"]}`)
-	if err != nil {
-		panic(err)
-	}
-	return equal
-}
-
 func main() {
-	fmt.Println(run())
+	a := `{"test": ["a", "c", "b"]}`
+	b := `{"test": ["c", "a", "b"]}`
+	equal, err := recursivesort.EqualJSON(a, b)
+	if err != nil {
+		log.Fatalf("failed to compare JSON values: %v", err)
+	}
+	if !equal {
+		log.Fatalf("expected %s == %s", a, b)
+	}
 }

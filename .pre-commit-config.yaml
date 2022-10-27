@@ -1,11 +1,19 @@
 repos:
-- repo: git://github.com/dnephin/pre-commit-golang
-  rev: master
-  hooks:
-    - id: go-fmt
-    - id: go-vet
-    - id: go-lint
-    - id: go-imports
-    - id: go-cyclo
-      args: [-over=15]
-    - id: go-build
+  - repo: https://github.com/dnephin/pre-commit-golang
+    rev: v0.5.1
+    hooks:
+      - id: go-fmt
+      - id: go-vet
+      - id: go-lint
+      - id: go-imports
+      - id: go-cyclo
+        args: [-over=15]
+      - id: go-build
+
+  - repo: local
+    hooks:
+      - id: embed-examples
+        name: embed-examples
+        entry: npx embedme --verify README.md
+        language: system
+        pass_filenames: false

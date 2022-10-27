@@ -1,16 +1,10 @@
-package gorecursivesort
+package recursivesort
 
 import (
-	"encoding/json"
 	"fmt"
 	"reflect"
-	sortimpl "sort"
-
-	"github.com/google/go-cmp/cmp"
+	"sort"
 )
-
-// Version is incremented using bump2version
-const Version = "0.0.1"
 
 func swapValues(slice reflect.Value, tmp reflect.Value, i, j int) {
 	vi := slice.Index(i)
@@ -20,18 +14,20 @@ func swapValues(slice reflect.Value, tmp reflect.Value, i, j int) {
 	vj.Set(tmp.Elem())
 }
 
-// TypePriorityLookupHelper ...
+// TypePriorityLookupHelper is an interface to compare two types.
 type TypePriorityLookupHelper interface {
 	CompareTypes(iv, ij reflect.Value) bool
 	CompareUnknownTypes(iv, ij reflect.Value) bool
 }
 
-// TypePriorityLookup ...
+// TypePriorityLookup maps types to integer priorities.
 type TypePriorityLookup struct {
 	Priorities map[reflect.Type]int
 }
 
-// CompareTypes ...
+// CompareTypes compars two known types based on their priorities.
+//
+// If priorities are not known, it delegates to `CompareUnknownTypes`.
 func (lookup *TypePriorityLookup) CompareTypes(iv, jv reflect.Value) bool {
 	ivp, iok := lookup.Priorities[iv.Type()]
 	jvp, jok := lookup.Priorities[jv.Type()]
@@ -41,13 +37,15 @@ func (lookup *TypePriorityLookup) CompareTypes(iv, jv reflect.Value) bool {
 	return ivp < jvp
 }
 
-// CompareUnknownTypes ...
+// CompareUnknownTypes compares two types, of which at least one is not known,
+// based on their string name.
 func (lookup *TypePriorityLookup) CompareUnknownTypes(iv, jv reflect.Value) bool {
 	// order based on the type name
 	return iv.Type().String() < jv.Type().String()
 }
 
-// FromTypes ...
+// FromTypes builds a `TypePriorityLookup` priority lookup table
+// based on the order of the passed types
 func (lookup TypePriorityLookup) FromTypes(order ...reflect.Type) *TypePriorityLookup {
 	priorities := make(map[reflect.Type]int)
 	for idx, typ := range order {
@@ -58,7 +56,8 @@ func (lookup TypePriorityLookup) FromTypes(order ...reflect.Type) *TypePriorityL
 	}
 }
 
-// FromValues ...
+// FromValues builds a `TypePriorityLookup` priority lookup table
+// based on the order of the passed values
 func (lookup TypePriorityLookup) FromValues(order ...interface{}) *TypePriorityLookup {
 	types := make([]reflect.Type, len(order))
 	for idx, i := range order {
@@ -171,12 +170,20 @@ func (s sortSliceOfInterfaces) Less(i, j int) bool {
 	return s.compareValues(iv, jv)
 }
 
-// RecursiveSort ...
+// RecursiveSort implements a recursive sort interface for arbitrary types.
 type RecursiveSort struct {
 	TypePriorityLookupHelper
-	MapSortKey      interface{}
+
+	// MapSortKey specifies the key of maps to use as the sorting key if available
+	MapSortKey interface{}
+
+	// StructSortField specifies the field of structs to use as the sorting key if available
 	StructSortField string
-	Strict          bool
+
+	// Strict forces using `StructSortField` and `MapSortKey`.
+	//
+	// Note: if the key or field does not exist, this will panic.
+	Strict bool
 }
 
 func (rec *RecursiveSort) sortMap(v reflect.Value) {
@@ -185,7 +192,7 @@ func (rec *RecursiveSort) sortMap(v reflect.Value) {
 	}
 }
 
-// Sort ...
+// Sort recursively sorts an interface.
 func (rec *RecursiveSort) Sort(v interface{}) {
 	rec.sort(reflect.ValueOf(v))
 }
@@ -213,7 +220,7 @@ func (rec *RecursiveSort) sort(v reflect.Value) {
 			strict:                   rec.Strict,
 			TypePriorityLookupHelper: rec.TypePriorityLookupHelper,
 		}
-		sortimpl.Sort(sortFunc)
+		sort.Sort(sortFunc)
 	case reflect.Map:
 		for _, k := range v.MapKeys() {
 			rec.sort(v.MapIndex(k))
@@ -225,27 +232,4 @@ func (rec *RecursiveSort) sort(v reflect.Value) {
 	default:
 		// ignore for now
 	}
-}
-
-// AreEqualJSON ...
-func AreEqualJSON(s1, s2 string) (bool, error) {
-	var o1 interface{}
-	var o2 interface{}
-
-	var err error
-	err = json.Unmarshal([]byte(s1), &o1)
-	if err != nil {
-		return false, fmt.Errorf("Error mashalling first: %v", err)
-	}
-	recsort := RecursiveSort{}
-	recsort.Sort(o1)
-	err = json.Unmarshal([]byte(s2), &o2)
-	if err != nil {
-		return false, fmt.Errorf("Error mashalling second: %v", err)
-	}
-	recsort.Sort(o2)
-	if diff := cmp.Diff(o1, o2); diff != "" {
-		return false, fmt.Errorf("difference: %s", diff)
-	}
-	return true, nil
 }
