@@ -4,6 +4,6 @@ import (
 	"testing"
 )
 
-func TestExample(t *testing.T) {
+func TestStructsExample(t *testing.T) {
 	main()
 }

@@ -201,6 +201,10 @@ func (rec *RecursiveSort) sort(v reflect.Value) {
 	if rec.TypePriorityLookupHelper == nil {
 		rec.TypePriorityLookupHelper = TypePriorityLookup{}.FromTypes()
 	}
+	if !v.CanInterface() {
+		// not exported, skip
+		return
+	}
 	// Indirect through pointers and interfaces
 	for v.Kind() == reflect.Ptr || v.Kind() == reflect.Interface {
 		v = v.Elem()
@@ -227,7 +231,8 @@ func (rec *RecursiveSort) sort(v reflect.Value) {
 		}
 	case reflect.Struct:
 		for i := 0; i < v.NumField(); i++ {
-			rec.sort(v.Field(i))
+			field := v.Field(i)
+			rec.sort(field)
 		}
 	default:
 		// ignore for now
