@@ -193,6 +193,12 @@ func (rec *RecursiveSort) sortMap(v reflect.Value) {
 }
 
 // Sort recursively sorts an interface.
+func Sort(v interface{}) {
+	sort := &RecursiveSort{}
+	sort.Sort(v)
+}
+
+// Sort recursively sorts an interface.
 func (rec *RecursiveSort) Sort(v interface{}) {
 	rec.sort(reflect.ValueOf(v))
 }
