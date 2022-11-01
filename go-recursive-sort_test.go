@@ -29,23 +29,26 @@ func TestAssumptions(t *testing.T) {
 
 func TestSortSliceOfUnexportedStruct(t *testing.T) {
 	t.Parallel()
-	defaultSort := &RecursiveSort{}
+	sort := &RecursiveSort{
+		StructSortField: "Exported",
+	}
 	type TestStruct struct {
 		unexported string
-		Exported   string
+		// Exported   string
+		Exported int64
 	}
 	value := []interface{}{
 		TestStruct{
 			unexported: "test",
-			Exported:   "test",
+			Exported:   0,
 		},
 		TestStruct{
 			unexported: "test",
-			Exported:   "test",
+			Exported:   1,
 		},
 	}
 	t.Logf("before: %v", value)
-	defaultSort.Sort(&value)
+	sort.Sort(&value)
 	t.Logf("after: %v", value)
 }
 

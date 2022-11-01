@@ -144,18 +144,91 @@ func (s sortSliceOfInterfaces) compareStruct(iv, jv reflect.Value) bool {
 	return s.compareValues(fivi, fjvi)
 }
 
+func comparePrimitiveInt(iv, jv reflect.Value) bool {
+	ivi := iv.Interface()
+	jvi := jv.Interface()
+	switch ivi.(type) {
+	case uint:
+		return ivi.(uint) < jvi.(uint)
+	case uint8: // also covers byte
+		return ivi.(uint8) < jvi.(uint8)
+	case uint16:
+		return ivi.(uint16) < jvi.(uint16)
+	case uint32:
+		return ivi.(uint32) < jvi.(uint32)
+	case uint64:
+		return ivi.(uint64) < jvi.(uint64)
+
+	case int:
+		return ivi.(int) < jvi.(int)
+	case int8:
+		return ivi.(int8) < jvi.(int8)
+	case int16:
+		return ivi.(int16) < jvi.(int16)
+	case int32: // also covers rune
+		return ivi.(int32) < jvi.(int32)
+	case int64:
+		return ivi.(int64) < jvi.(int64)
+	default:
+		panic(fmt.Sprintf("not implemented: %v", iv.Kind()))
+	}
+}
+
+func comparePrimitive(iv, jv reflect.Value) bool {
+	ivi := iv.Interface()
+	jvi := jv.Interface()
+	switch ivi.(type) {
+	// bool
+	case bool:
+		if ivi.(bool) == false && jvi.(bool) == true {
+			return true
+		}
+		return false
+
+		// string
+	case string:
+		return ivi.(string) < jvi.(string)
+
+		// integers
+	case uint, uint8, uint16, uint32, uint64, int, int8, int16, int32, int64:
+		return comparePrimitiveInt(iv, jv)
+
+		// float numbers
+	case float32:
+		return ivi.(float32) < jvi.(float32)
+	case float64:
+		return ivi.(float64) < jvi.(float64)
+
+		// complex numbers
+		// note: there is no total ordering of complex numbers
+		// we resort to lexicographic ordering
+	case complex64:
+		i := ivi.(complex64)
+		j := jvi.(complex64)
+		if real(i) < real(j) {
+			return true
+		}
+		return imag(i) < imag(j)
+	case complex128:
+		i := ivi.(complex128)
+		j := jvi.(complex128)
+		if real(i) < real(j) {
+			return true
+		}
+		return imag(i) < imag(j)
+	default:
+	}
+	panic(fmt.Sprintf("not implemented: %v", iv.Kind()))
+}
+
 func (s sortSliceOfInterfaces) compareSameKind(iv, jv reflect.Value) bool {
 	switch iv.Kind() {
-	case reflect.String:
-		return iv.String() < jv.String()
-	case reflect.Int:
-		return iv.Int() < jv.Int()
 	case reflect.Map:
 		return s.compareMap(iv, jv)
 	case reflect.Struct:
 		return s.compareStruct(iv, jv)
 	default:
-		panic(fmt.Sprintf("not implemented: %v", iv.Kind()))
+		return comparePrimitive(iv, jv)
 	}
 }
 
