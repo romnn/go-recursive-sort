@@ -27,6 +27,28 @@ func TestAssumptions(t *testing.T) {
 	}
 }
 
+func TestSortSliceOfUnexportedStruct(t *testing.T) {
+	t.Parallel()
+	defaultSort := &RecursiveSort{}
+	type TestStruct struct {
+		unexported string
+		Exported   string
+	}
+	value := []interface{}{
+		TestStruct{
+			unexported: "test",
+			Exported:   "test",
+		},
+		TestStruct{
+			unexported: "test",
+			Exported:   "test",
+		},
+	}
+	t.Logf("before: %v", value)
+	defaultSort.Sort(&value)
+	t.Logf("after: %v", value)
+}
+
 func TestRecSort(t *testing.T) {
 	t.Parallel()
 	defaultSort := &RecursiveSort{}

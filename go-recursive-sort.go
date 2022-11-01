@@ -124,14 +124,24 @@ func (s sortSliceOfInterfaces) compareStruct(iv, jv reflect.Value) bool {
 			// cannot compare empty slices
 			panic("cannot compare empty slices")
 		}
-		// just use field zero
-		fiv := iv.Field(0)
-		fjv := jv.Field(0)
-		return s.compareValues(reflect.ValueOf(fiv.Interface()), reflect.ValueOf(fjv.Interface()))
+		// compare values of first exported field
+		for i := 0; i < iv.NumField(); i++ {
+			fiv := iv.Field(i)
+			fjv := jv.Field(i)
+			if fiv.CanInterface() && fjv.CanInterface() {
+				fivi := reflect.ValueOf(fiv.Interface())
+				fjvi := reflect.ValueOf(fjv.Interface())
+				return s.compareValues(fivi, fjvi)
+			}
+		}
+		panic("cannot compare struct with no exported fields")
 	}
+
 	fiv := iv.Field(fi.Index[0])
 	fjv := jv.Field(fj.Index[0])
-	return s.compareValues(reflect.ValueOf(fiv.Interface()), reflect.ValueOf(fjv.Interface()))
+	fivi := reflect.ValueOf(fiv.Interface())
+	fjvi := reflect.ValueOf(fjv.Interface())
+	return s.compareValues(fivi, fjvi)
 }
 
 func (s sortSliceOfInterfaces) compareSameKind(iv, jv reflect.Value) bool {
